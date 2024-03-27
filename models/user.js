@@ -24,6 +24,7 @@ const UserSchema = new Schema({
     maxlength: 30 },
 });
 
+
 const UserModel = mongoose.model('Credential', UserSchema);
 
 export default UserModel;

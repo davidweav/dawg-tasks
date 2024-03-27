@@ -1,11 +1,8 @@
 import UserModel from '../models';
 
-export async function register(username, email, password) {
+export async function register(req, res) {
   // Validate email format
   console.log('Email:', email);
-  if (!email.match(/^[a-zA-Z0-9._%+-]+@uga\.edu$/)) {
-    throw new Error('Please use a valid uga.edu email address for registration.');
-  }
 
   // Check if the user already exists
   const existingUser = await UserModel.findOne({ email });

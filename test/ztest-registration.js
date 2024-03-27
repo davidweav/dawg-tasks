@@ -1,5 +1,5 @@
-import { register } from './lib/mongo/auth.js';
-import connectToDatabase from './lib/mongo/mongo.js';
+import { register } from '../lib/mongo/auth.js';
+import connectToDatabase from '../lib/mongo/mongo.js';
 
 // Example registration data
 const username = 'davidweav';

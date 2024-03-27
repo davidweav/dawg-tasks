@@ -54,6 +54,9 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+label {
+  text-align: center;
+}
 .page {
   display: flex;
   flex-direction: column;
@@ -67,8 +70,22 @@ nav {
   padding-bottom: 2rem;
   justify-content: space-between;
   border-bottom: solid white;
+  margin-bottom: 2rem;
 }
 
+.form-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #EF233C;
+  margin-bottom: 2rem;
+  border-radius: 10%;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 2rem;
+}
 .sign-in {
   display: inline-block;
   background-color: #EF233C;
@@ -79,6 +96,22 @@ header {
   width: 100%;
 }
 
+form button {
+  display: block;
+  margin: auto;
+  margin-bottom: 0.5rem;
+  background-color: black;
+  border: none;
+  padding: 0.5rem;
+  font-size: 12px;
+  border-radius: 10%;
+  border: solid 1px white;
+}
+
+form button:hover {
+  background-color: #000000b3;
+  cursor: pointer;
+}
 .body p {
   margin: 1rem 0;
 }

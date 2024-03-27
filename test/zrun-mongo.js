@@ -1,4 +1,4 @@
-import connectToDatabase from './lib/mongo/mongo.js';
+import connectToDatabase from '../lib/mongo/mongo.js';
 
 // Connect to MongoDB
 async function runMongo() {
