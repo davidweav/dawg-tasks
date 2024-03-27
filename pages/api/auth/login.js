@@ -44,3 +44,4 @@ export async function logIn(usernameOrEmail, password) {
     console.error(error);
     res.status(401).json({ message: error.message });
   }
+}
