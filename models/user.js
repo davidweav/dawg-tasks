@@ -17,7 +17,7 @@ const UserSchema = new Schema({
     unique: true,
     match: /.*uga\.edu$/
   },
-  hashedPassword: {
+  password: {
     type: String,
     required: true
   },
