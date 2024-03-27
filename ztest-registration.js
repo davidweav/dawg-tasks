@@ -1,9 +1,10 @@
-import { register } from './lib/mongo/auth.js';
+import register from './pages/api/auth/register.js';
 import connectToDatabase from './lib/mongo/mongo.js';
+import UserModel from './models/user.js';
 
 // Example registration data
-const username = 'davidweav';
-const email = 'example@uga.edu';
+const username = 'adambiatch';
+const email = 'adambitch@uga.edu';
 const password = 'password123';
 
 // Register user
