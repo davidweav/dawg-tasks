@@ -1,10 +1,8 @@
 import Link from "next/link"
-import { Inter } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
 export default function Login() {
     return (
-        <main className={`${inter.className} page`}>
+        <main className={`page`}>
             <nav>
               <Link className='title' href='/'>Dawg Tasks</Link>
               <p>get help. get paid</p>
