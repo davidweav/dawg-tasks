@@ -4,62 +4,52 @@ import jwt from 'jsonwebtoken';
 import { comparePasswords } from '../../../lib/mongo/utils';
 
 
+await connectToDatabase()
+  .then(() => {
+    console.log('Connected to the database');
+  })
+  .catch((error) => {
+    console.error('Error connecting to the database:', error);
+    process.exit(1);
+  });
 
-// export default async function login(res, req) {
-//   try {
-//     if (req.method === 'POST') {
-//       print(res);
-//       const { username, password } = req.body;
-//       console.log("test");
-//       // Find the user by email or username
-//       const user = await UserModel.findOne(username);
-//       if (!user) {
-//         throw new Error('User not found.');
-//       }
-
-//       // Compare passwords
-//       const passwordMatch = await comparePasswords(password, user.password);
-//       if (!passwordMatch) {
-//         throw new Error('Incorrect password.');
-//       }
-//       res.statusCode = 200;
-//       res.json({ message: 'User registered successfully'});
-//     } else {
-//       res.status(400).json({ message: error.message }); // Handle registration errors
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     res.json({ message: error.message }); // Handle registration errors
-
-//   }
-// }
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
-      // await connectToDatabase()
-      //   .then(() => {
-      //     console.log('Connected to the database');
-      //   })
-      //   .catch((error) => {
-      //     console.error('Error connecting to the database:', error);
-      //     process.exit(1);
-      //   });
+      
       // Extract user data from request body
       const { username, password } = req.body;
       console.log(username, password);
-      
-      // // Validate email format
-      // if (!email.match(/.*uga\.edu$/)) {
-      //   throw new Error('Please use a valid uga.edu email address for registration.');
-      // }
 
-      
+      const user = await UserModel.findOne({username});
 
-      // Registration successful response
-      res.status(200).json({ message: 'User registered successfully'});
-      console.log("user registered successfully");
-      // await disconnectFromDatabase();
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+    
+      const passwordsMatch = await comparePasswords(password, user.password);
+      
+      console.log(password)
+      console.log(user.password)
+      if (passwordsMatch) {
+        const token = jwt.sign({ username: user.username}, 'key');
+      
+        // Calculate expiration time for the cookie (5 minutes from now)
+        const expirationTime = new Date();
+        expirationTime.setTime(expirationTime.getTime() + (5 * 60 * 1000)); // 5 minutes in milliseconds
+
+        res.setHeader('Set-Cookie', `token=${token}; Expires=${expirationTime.toUTCString()}; Path=/; HttpOnly; SameSite=Strict`)
+        // Registration successful response
+        res.status(200).json({ message: 'User signed in successfully'});
+        console.log("user signed in successfully");
+      }
+      else {
+        // Passwords Dont match
+        res.status(400).json({ message: 'Passwords do not match'});
+        console.log("Password mismatch");
+      }
     
     } catch (error) {
       
