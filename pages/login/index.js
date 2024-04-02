@@ -20,8 +20,10 @@ export default function Login() {
     *  It works by making an http request to the endpoint in /api/auth/register
     */
     const handleCreateAccount = async (e) => {
+    
         e.preventDefault();
         try {
+            
             const res = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: {
@@ -30,6 +32,8 @@ export default function Login() {
                 body: JSON.stringify({email, username, password})
             })
             if (res.ok) {
+                // const data = await res.json();
+                // localStorage.setItem('token', data.token)
                 router.push('/taskboard')
             }
             else {
@@ -54,7 +58,7 @@ export default function Login() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({username2, password2}),
+                body: JSON.stringify({username: username2, password: password2}),
             });
 
             if (res.ok) {
