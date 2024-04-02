@@ -1,3 +1,4 @@
+import DropdownMenu from "@/components/DropdownMenu"
 import Link from "next/link"
 
 export default function Makepost() {
@@ -6,7 +7,7 @@ export default function Makepost() {
             <nav>
               <Link className='title' href='/'>Dawg Tasks</Link>
               <p>get help. get paid</p>
-              <Link className='sign-in' href='/login'>Sign In</Link>
+              <DropdownMenu/>
             </nav>
 
             <h1>Make Post Page</h1>

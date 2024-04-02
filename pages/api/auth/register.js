@@ -35,8 +35,14 @@ export default async function handler(req, res) {
       console.log("saving user");
       await newUser.save();
 
-      // const token = jwt.sign({ userId: newUser.username, email: newUser.email }, 'key');
+
+      const token = jwt.sign({ username: newUser.username}, 'key');
       
+      // Calculate expiration time for the cookie (5 minutes from now)
+       const expirationTime = new Date();
+       expirationTime.setTime(expirationTime.getTime() + (5 * 60 * 1000)); // 5 minutes in milliseconds
+
+      res.setHeader('Set-Cookie', `token=${token}; Expires=${expirationTime.toUTCString()}; Path=/; HttpOnly; SameSite=Strict`)
       // Registration successful response
       res.status(200).json({ message: 'User registered successfully'});
       console.log("user registered successfully");
