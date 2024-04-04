@@ -4,7 +4,6 @@ import { hashPassword } from '../../../lib/mongo/utils.js';
 import jwt from 'jsonwebtoken'
 
 
-console.log("here");
 await connectToDatabase()
   .then(() => {
     console.log('Connected to the database');

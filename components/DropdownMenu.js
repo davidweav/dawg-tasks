@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const DropdownMenu = () => {
 
 
+    const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [userData, setUserData] = useState(null);
 
@@ -24,6 +26,10 @@ const DropdownMenu = () => {
         fetchUserData();
     }, [])
 
+    const handleSignOut = async (e) => {
+      document.cookie = 'Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT;';
+      router.push('/login')
+    }
     const toggleDropdown = () => setIsOpen(!isOpen);
 
     return (
@@ -35,6 +41,7 @@ const DropdownMenu = () => {
                     <div class="dropdown-content">
                     <Link href='/makepost'>Make Post</Link>
                     <Link href='/taskboard'>Taskboard</Link>
+                    <button onClick={handleSignOut}>Sign Out</button>
                   </div>
                   )}
                   
