@@ -4,6 +4,14 @@ import { useEffect, useState } from "react"
 
 export default function Taskboard() {
     
+    const [postData, setPostData] = useState(null);
+
+    useEffect(() => {
+        // Call Database
+        // const res = await fetch('/api/posts/readposts')
+    })
+
+
     return (
         <main className={`page`}>
             <nav>
@@ -14,6 +22,7 @@ export default function Taskboard() {
             </nav>
 
             <h1>Taskboard</h1>
+        
             
         </main>
     )
