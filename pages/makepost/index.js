@@ -1,4 +1,5 @@
 import DropdownMenu from "@/components/DropdownMenu"
+import styles from '/styles/Makepost.module.css'
 import Link from "next/link"
 import { useState } from "react"
 
@@ -68,17 +69,23 @@ export default function Makepost() {
                     </div>
                     <div className="form-field">
                         <label htmlFor="priceAmount">Amount Paying</label>
-                            <input type="priceAmount" 
+                            <input type="number" 
                                 id="priceAmount" 
                                 value={priceAmount}
                                 onChange={(e) => setPriceAmount(e.target.value)}
+                                min="0.01" 
+                                step="0.01" 
+                                max="10000" 
                             />
                     </div>
                     <div className="form-field">
                         <label htmlFor="dateExpired">Epiry Date</label>
-                            <input type="dateExpired" 
+                            <input type="date" 
                                 id="dateExpired" 
                                 value={dateExpired}
+                                name="trip-start"  
+                                min="2024-01-01" 
+                                max="2024-12-31"
                                 onChange={(e) => setDateExpired(e.target.value)}
                             />
                     </div>
