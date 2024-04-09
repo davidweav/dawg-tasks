@@ -40,7 +40,7 @@ export default function Login() {
                 // Handle error response
                 const errorData = await res.json();
                 console.error('Account creation failed:', errorData);
-              }
+            }
         }
         catch (error) {      
             console.error('Error creating account:', error);
