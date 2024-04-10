@@ -7,22 +7,22 @@ export default function Makepost() {
 
     const [subject, setSubject] = useState('');
     const [body, setBody] = useState('');
-    const [password, setPassword] = useState('');
-    const [user, setUser] = useState('');
-    const [dateExpired, setDateExpired] = useState('');
-    const [priceAmount, setPriceAmount] = useState('');
+    const [dueDate, setDueDate] = useState('');
+    const [price, setPrice] = useState('');
 
     const handleCreatePost = async (e) => {
+        console.log("hello");
         e.preventDefault();
         // call to server side API
+       
         try {
 
-            const res = await fetch('/api/posts/makeposts', {
+            const res = await fetch('/api/posts/makepost', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({subject, body, user, dateExpired, priceAmount})
+                body: JSON.stringify({subject, body, dueDate, price})
             })
             if (res.ok) {
                 router.push('/taskboard')
@@ -68,25 +68,25 @@ export default function Makepost() {
                             />
                     </div>
                     <div className="form-field">
-                        <label htmlFor="priceAmount">Amount Paying</label>
+                        <label htmlFor="price">Amount Paying</label>
                             <input type="number" 
-                                id="priceAmount" 
-                                value={priceAmount}
-                                onChange={(e) => setPriceAmount(e.target.value)}
+                                id="price" 
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value)}
                                 min="0.01" 
                                 step="0.01" 
                                 max="10000" 
                             />
                     </div>
                     <div className="form-field">
-                        <label htmlFor="dateExpired">Epiry Date</label>
+                        <label htmlFor="dueDate">Expiry Date</label>
                             <input type="date" 
-                                id="dateExpired" 
-                                value={dateExpired}
+                                id="dueDate" 
+                                value={dueDate}
                                 name="trip-start"  
                                 min="2024-01-01" 
                                 max="2024-12-31"
-                                onChange={(e) => setDateExpired(e.target.value)}
+                                onChange={(e) => setDueDate(e.target.value)}
                             />
                     </div>
                     <button type="submit">Create Post</button>
