@@ -22,26 +22,30 @@ export default function Taskboard() {
     }, []); // The empty array means this effect runs once on mount
 
     return (
-        <main className="page" style={{ fontFamily: 'Arial, sans-serif', color: '#FFF', backgroundColor: '#333' }}>
-            <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px', backgroundColor: '#20232a' }}>
-              <Link href="/">
-                <span className="title" style={{ cursor: "pointer", fontWeight: 'bold', fontSize: '24px', color: '#61dafb' }}>Dawg Tasks</span>
+        <main className="page" >
+            <nav >
+              <Link href="/" className="title">
+                Dawg Tasks
               </Link>
-              <p style={{ margin: '0', fontSize: '16px', color: '#61dafb' }}>get help. get paid</p>
+              <p>get help. get paid</p>
               <DropdownMenu />
             </nav>
 
-            <h1 style={{ textAlign: 'center', margin: '20px 0', fontSize: '36px' }}>Taskboard</h1>
+            <h1>Taskboard</h1>
             {/* Render posts if postData is not empty */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px' }}>
+            <div className="taskboard-box">
               {postData && postData.length > 0 ? (
                   postData.map((post) => (
-                      <div key={post.taskId} style={{ width: '300px', padding: '20px', borderRadius: '5px', backgroundColor: '#20232a', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-                          <h2 style={{ fontSize: '20px', color: '#61dafb' }}>{post.description}</h2>
-                          <p style={{ margin: '10px 0', fontSize: '16px' }}>Publisher: {post.publisher}</p>
-                          <p style={{ margin: '10px 0', fontSize: '16px' }}>Due Date: {post.dueDate}</p>
-                          <p style={{ margin: '10px 0', fontSize: '16px' }}>Reward: ${post.reward}</p>
-                          <p style={{ margin: '10px 0', fontSize: '16px' }}>Status: {post.status}</p>
+                      <div key={post.taskId} className="post-box">
+                          <h2 className="post-title">{post.subject}</h2>
+                          <div className="post-content">
+                            <p>{post.body}</p>
+                            <p>{post.user}</p>
+                            <p>{post.dueDate}</p>
+                            <p>${post.price}</p>
+                            
+                        </div>
+                          
                       </div>
                   ))
               ) : (

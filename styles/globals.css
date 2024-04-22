@@ -137,11 +137,36 @@ form button {
   background-color: #f1f1f1;
 }
 
+.taskboard-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; 
+  gap: 20px;
+}
 /* Show the dropdown menu when the dropdown button is clicked */
 .show {
   display: block;
 }
 
+
+.post-title {
+  font-size: 25px;
+  color: white;
+}
+
+.post-content > p {
+  margin: 1em 0;
+  font-weight: 700;
+  color: black;
+}
+
+.post-box {
+  width: 300px;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #EF233C;
+  border: solid white 3px
+}
 form button:hover {
   background-color: #000000b3;
   cursor: pointer;
