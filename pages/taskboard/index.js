@@ -1,10 +1,12 @@
 import DropdownMenu from "@/components/DropdownMenu";
+import { set } from "mongoose";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Taskboard() {
     // State to hold the posts data
     const [postData, setPostData] = useState([]);
+    const [hoveredPost, setHoveredPost] = useState(null);
 
     // Fetch posts data from the API on component mount
     useEffect(() => {
@@ -36,14 +38,23 @@ export default function Taskboard() {
             <div className="taskboard-box">
               {postData && postData.length > 0 ? (
                   postData.map((post) => (
-                      <div key={post.taskId} className="post-box">
+                      <div key={post._id} 
+                      className="post-box"
+                      onMouseEnter={() => {setHoveredPost(post._id)}} 
+                      onMouseLeave={() => {setHoveredPost(null)}}>
                           <h2 className="post-title">{post.subject}</h2>
                           <div className="post-content">
                             <p>{post.body}</p>
                             <p>{post.user}</p>
                             <p>{post.dueDate}</p>
                             <p>${post.price}</p>
-                            
+
+                            {hoveredPost == post._id && (
+                                 <>
+                                 <input type="text" placeholder="Enter something" />
+                                 <button onClick={() => handleSubmit(post)}>Submit Request</button>
+                               </>
+                            )}
                         </div>
                           
                       </div>
