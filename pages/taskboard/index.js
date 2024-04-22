@@ -39,23 +39,25 @@ export default function Taskboard() {
               {postData && postData.length > 0 ? (
                   postData.map((post) => (
                       <div key={post._id} 
-                      className="post-box"
-                      onMouseEnter={() => {setHoveredPost(post._id)}} 
-                      onMouseLeave={() => {setHoveredPost(null)}}>
+                      onClick={() => {setHoveredPost(post._id)}} 
+                      className={hoveredPost == post._id ? 'post-box clicked' : "post-box"}>
+                        <div>
                           <h2 className="post-title">{post.subject}</h2>
                           <div className="post-content">
                             <p>{post.body}</p>
                             <p>{post.user}</p>
                             <p>{post.dueDate}</p>
                             <p>${post.price}</p>
-
-                            {hoveredPost == post._id && (
-                                 <>
-                                 <input type="text" placeholder="Enter something" />
-                                 <button onClick={() => handleSubmit(post)}>Submit Request</button>
-                               </>
-                            )}
                         </div>
+                        </div>
+                            {hoveredPost == post._id && (
+                                 <div className="additional-fields">
+                                 <textarea className="post-input" type="text" placeholder="Send a message in your request" />
+                                 <button className="post-button"onClick={() => handleSubmit(post)}>Claim Task</button>
+                               </div>
+                            )}
+
+                        
                           
                       </div>
                   ))

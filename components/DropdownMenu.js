@@ -41,7 +41,7 @@ const DropdownMenu = () => {
                     <div class="dropdown-content">
                     <Link href='/makepost'>Make Post</Link>
                     <Link href='/taskboard'>Taskboard</Link>
-                    <Link href='/user'>Edit Account</Link>
+                    <Link href='/user'>My Tasks</Link>
                     <button onClick={handleSignOut}>Sign Out</button>
                   </div>
                   )}
