@@ -1,5 +1,5 @@
 import DropdownMenu from "@/components/DropdownMenu"
-import styles from '/styles/Makepost.module.css'
+import styles from '../../styles/Makepost.module.css'
 import Link from "next/link"
 import { useState } from "react"
 import { useRouter } from "next/router"
@@ -91,7 +91,7 @@ export default function Makepost() {
                                 onChange={(e) => setDueDate(e.target.value)}
                             />
                     </div>
-                    <button type="submit">Create Post</button>
+                    <button type="submit" className={styles.createPostButton}>Create Post</button>
                 </form>
                 
             </div>

@@ -111,7 +111,7 @@ export default function Login() {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                     </div>
-                    <button type="submit">Create Account</button>
+                    <button type="submit" class="create-account-btn">Create Account</button>
                 </form>
                 
             </div>
@@ -137,7 +137,7 @@ export default function Login() {
                                 onChange={(e) => setPassword2(e.target.value)}
                             />
                     </div>
-                    <button type="submit">Login</button>
+                    <button type="submit" class="create-account-btn">Login</button>
                 </form>
             </div>
 

@@ -48,7 +48,7 @@ const DropdownMenu = () => {
                   
                 </div>
               ) : (
-                <Link className='sign-in' href='/login'>Sign In</Link>
+                <Link className='sign-in' href='/login' style={{ color: 'white' }}>Sign In</Link>
               )}
         </div>
     )

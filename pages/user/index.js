@@ -1,57 +1,66 @@
-import Link from "next/link"
-import { useState, useEffect } from "react"
+import Link from "next/link";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import DropdownMenu from "@/components/DropdownMenu";
 
-
 export default function MyTasks() {
-
+    const router = useRouter();
     const [userData, setUserData] = useState(null);
     const [myPostData, setMyPostData] = useState([]);
     const [requestData, setRequestData] = useState([]);
     const [claimedTasks, setClaimedTasks] = useState([]);
-    // Fetch posts data from the API on component mount
-    // Define fetchPosts outside of useEffect so it's accessible globally
+    const [finishedTasks, setFinishedTasks] = useState([]); // New state for finished tasks
+
     async function fetchPosts() {
         try {
             const res = await fetch('/api/posts/readposts');
             const data = await res.json();
             const myPosts = data.posts.filter(post => post.user.username === userData.username);
-            const claimedPosts = data.posts.filter(post => {
-                return post.status == "claimed" && post.requestingUser.username == userData.username})
-            const requests = myPosts.filter(post =>  post.status === "requested");
+            const claimedPosts = data.posts.filter(post => post.status === "claimed" && post.requestingUser.username === userData.username);
+            const requests = myPosts.filter(post => post.status === "requested");
 
-            console.log(myPosts, requests);
             setMyPostData(myPosts);
             setRequestData(requests);
-            setClaimedTasks(claimedPosts)
+            setClaimedTasks(claimedPosts);
         } catch (error) {
             console.error("Failed to fetch posts:", error);
         }
     }
 
-    const handleClick = async (postId) => {
-    
+    const handleAccept = async (postId) => {
         try {
-
             const res = await fetch('/api/posts/acceptrequest', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({postId})
-            })
+                body: JSON.stringify({ postId })
+            });
             if (res.ok) {
-                router.push('/taskboard')
-            } else { 
+                fetchPosts(); // Re-fetch posts to update the UI
+            } else {
                 const errorData = await res.json();
-                console.error('Post creation failed:', errorData);
+                console.error('Accept request failed:', errorData);
             }
+        } catch (error) {
+            console.error('Error accepting a post:', error);
         }
-        catch (error) {      
-            console.error('Error creating a post:', error);
+    };
+
+    const handleComplete = (post) => {
+        setFinishedTasks([...finishedTasks, post]);
+        setClaimedTasks(claimedTasks.filter(p => p._id !== post._id));
+    };
+
+    const handleDecline = (post) => {
+        const reason = prompt("Please enter the reason for declining the task:");
+        if (reason) {
+            const declinedPost = { ...post, reason }; // Attach the reason to the post
+            setFinishedTasks([...finishedTasks, declinedPost]);
+            setClaimedTasks(claimedTasks.filter(p => p._id !== post._id));
         }
-    }
+    };
+
     useEffect(() => {
         async function fetchUserData() {
             try {
@@ -66,97 +75,73 @@ export default function MyTasks() {
                 console.error('Error fetching user data:', error);
             }
         }
-
-        fetchUserData(); // Fetch user data on mount
-    }, []); // The empty array means this effect runs once on mount
+        fetchUserData();
+    }, []);
 
     useEffect(() => {
-        // Check if userData is not null before fetching posts
-        if (userData != null) {
+        if (userData) {
             fetchPosts();
         }
-    }, [userData]); // Run this effect whenever userData changes
-        
+    }, [userData]);
 
     return (
         <main className={`page`}>
             <nav>
-              <Link className='title' href='/'>Dawg Tasks</Link>
-              <p>get help. get paid</p>
-              <DropdownMenu/>
+                <Link className='title' href='/'>Dawg Tasks</Link>
+                <p>get help. get paid</p>
+                <DropdownMenu />
             </nav>
-
 
             <div className="user-task-container">
                 <div className="task-display">
                     <h3>Claimed Tasks</h3>
-                    {claimedTasks && claimedTasks.length > 0 ? (
-                  claimedTasks.map((post) => (
-                      <div key={post._id} 
-                      className="post-box2">
-                        <div>
-                          <h2 className="post-title2">{post.subject}</h2>
-                          <div className="post-content2">
-                            <p>{post.body}</p>
-                            <p>{post.user.username}</p>
-                            <p>{post.dueDate}</p>
-                            <p>${post.price}</p>
+                    {claimedTasks.length > 0 ? claimedTasks.map((post) => (
+                        <div key={post._id} className="post-box2">
+                            <div>
+                                <h2 className="post-title2">{post.subject}</h2>
+                                <div className="post-content2">
+                                    <p>{post.body}</p>
+                                    <p>{post.user.username}</p>
+                                    <p>{post.dueDate}</p>
+                                    <p>${post.price}</p>
+                                    <button onClick={() => handleComplete(post)}>Complete</button>
+                                    <button onClick={() => handleDecline(post)}>Decline</button>
+                                </div>
+                            </div>
                         </div>
-                        </div>
-                          
-                      </div>
-                  ))
-              ) : (
-                  <p>You have not posted any tasks.</p>
-              )}
+                    )) : <p>No claimed tasks available.</p>}
                 </div>
                 <div className="task-display">
                     <h3>My Tasks</h3>
-                    {myPostData && myPostData.length > 0 ? (
-                  myPostData.map((post) => (
-                      <div key={post._id} 
-                      className="post-box2">
-                        <div>
-                          <h2 className="post-title2">{post.subject}</h2>
-                          <div className="post-content2">
-                            <p>{post.body}</p>
-                            <p>{post.user.username}</p>
-                            <p>{post.dueDate}</p>
-                            <p>${post.price}</p>
+                    {myPostData.length > 0 ? myPostData.map((post) => (
+                        <div key={post._id} className="post-box2">
+                            <div>
+                                <h2 className="post-title2">{post.subject}</h2>
+                                <div className="post-content2">
+                                    <p>{post.body}</p>
+                                    <p>{post.user.username}</p>
+                                    <p>{post.dueDate}</p>
+                                    <p>${post.price}</p>
+                                </div>
+                            </div>
                         </div>
-                        </div>
-                          
-                      </div>
-                  ))
-              ) : (
-                  <p>You have not posted any tasks.</p>
-              )}
+                    )) : <p>You have not posted any tasks.</p>}
                 </div>
                 <div className="task-display">
-                    <h3>Incoming Requests</h3>
-                    {requestData && requestData.length > 0 ? (
-                  requestData.map((post) => (
-                      <div key={post._id} 
-                      className="post-box2">
-                        <div>
-                          <h2 className="post-title2">{post.subject}</h2>
-                          <div className="post-content2">
-                            <p>{post.requestingUser.username} requests to claim this task</p>
-                            <p>{post.statusMsg}</p>
-                            <button onClick={handleClick(post._id)} className="post-button">Accept Request </button>
-                        
+                    <h3>Finished Tasks</h3>
+                    {finishedTasks.length > 0 ? finishedTasks.map((post) => (
+                        <div key={post._id} className="post-box2">
+                            <div>
+                                <h2 className="post-title2">{post.subject}</h2>
+                                <div className="post-content2">
+                                    <p>Task was {post.reason ? "declined" : "completed"}</p>
+                                    {post.reason && <p>Reason: {post.reason}</p>}
+                                </div>
+                            </div>
                         </div>
-                        </div>
-                          
-                      </div>
-                  ))
-              ) : (
-                  <p>No one has requested to complete your tasks</p>
-              )}
+                    )) : <p>No finished tasks yet.</p>}
                 </div>
             </div>
-
-
         </main>
-    )
+    );
 }
