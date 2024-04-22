@@ -16,7 +16,7 @@ export default function Taskboard() {
                 const res = await fetch('/api/posts/readposts');
                 const data = await res.json();
                 
-                setPostData(data.posts); // Update the state with the fetched posts data
+                setPostData(data.posts.filter(post => post.status == "Unclaimed")); // Update the state with the fetched posts data
             } catch (error) {
                 console.error("Failed to fetch posts:", error);
             }
@@ -36,9 +36,8 @@ export default function Taskboard() {
                 body: JSON.stringify({"post": hoveredPost, reqMsg})
             })
             if (res.ok) {
-                // const data = await res.json();
-                // localStorage.setItem('token', data.token)
-                router.push('/taskboard')
+            
+                router.reload();
             }
             else {
                 // Handle error response
@@ -63,7 +62,9 @@ export default function Taskboard() {
               <DropdownMenu />
             </nav>
 
-            <h1>Taskboard</h1>
+            <h1>The Taskboard</h1>
+            <p>Click tasks to send requests to claim them</p>
+
             {/* Render posts if postData is not empty */}
             <div className="taskboard-box">
               {postData && postData.length > 0 ? (
@@ -90,8 +91,6 @@ export default function Taskboard() {
                                  
                                </div>
                             )}
-
-                        
                           
                       </div>
                   ))
