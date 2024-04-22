@@ -27,7 +27,7 @@ const DropdownMenu = () => {
     }, [])
 
     const handleSignOut = async (e) => {
-      document.cookie = 'Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT;';
+      document.cookie = 'token=; path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT;';
       router.push('/login')
     }
     const toggleDropdown = () => setIsOpen(!isOpen);
@@ -37,7 +37,7 @@ const DropdownMenu = () => {
             {userData ? (
                 <div className='dropdown'>
                   <button onClick={toggleDropdown}className='dropdown-button'>{userData.username} ^</button>
-                  {isOpen && (
+                  { isOpen && (
                     <div class="dropdown-content">
                     <Link href='/makepost'>Make Post</Link>
                     <Link href='/taskboard'>Taskboard</Link>

@@ -31,5 +31,4 @@ if (mongoose.models.Credential) {
   UserModel = mongoose.model('Credential', UserSchema);
 
 }
-
 export default UserModel;

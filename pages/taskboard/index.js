@@ -7,6 +7,7 @@ export default function Taskboard() {
     // State to hold the posts data
     const [postData, setPostData] = useState([]);
     const [hoveredPost, setHoveredPost] = useState(null);
+    const [reqMsg, setReqMsg] = useState('');
 
     // Fetch posts data from the API on component mount
     useEffect(() => {
@@ -14,6 +15,7 @@ export default function Taskboard() {
             try {
                 const res = await fetch('/api/posts/readposts');
                 const data = await res.json();
+                
                 setPostData(data.posts); // Update the state with the fetched posts data
             } catch (error) {
                 console.error("Failed to fetch posts:", error);
@@ -22,6 +24,34 @@ export default function Taskboard() {
         
         fetchPosts();
     }, []); // The empty array means this effect runs once on mount
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await fetch('/api/posts/claimpost', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({"post": hoveredPost, reqMsg})
+            })
+            if (res.ok) {
+                // const data = await res.json();
+                // localStorage.setItem('token', data.token)
+                router.push('/taskboard')
+            }
+            else {
+                // Handle error response
+                const errorData = await res.json();
+                console.error('Error', errorData);
+            }
+        }
+        catch (error) {      
+            console.error('Error:', error);
+        }
+        }
+    
+
 
     return (
         <main className="page" >
@@ -45,15 +75,19 @@ export default function Taskboard() {
                           <h2 className="post-title">{post.subject}</h2>
                           <div className="post-content">
                             <p>{post.body}</p>
-                            <p>{post.user}</p>
+                            <p>{post.user.username}</p>
                             <p>{post.dueDate}</p>
                             <p>${post.price}</p>
                         </div>
                         </div>
                             {hoveredPost == post._id && (
                                  <div className="additional-fields">
-                                 <textarea className="post-input" type="text" placeholder="Send a message in your request" />
-                                 <button className="post-button"onClick={() => handleSubmit(post)}>Claim Task</button>
+                                    <form onSubmit={handleSubmit}>
+                                        <textarea className="post-input" value = {reqMsg} type="text" placeholder="Send a message in your request" 
+                                        onChange={(e) => setReqMsg(e.target.value)}/>
+                                        <button className="post-button" type="submit">Claim Task</button>
+                                    </form>
+                                 
                                </div>
                             )}
 

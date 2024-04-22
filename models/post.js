@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+import User from './user';
 const { Schema } = mongoose;
 
 let PostModel;
@@ -25,14 +25,23 @@ if (mongoose.models.Post) {
         required: true,
     },
     user: {
-        type: String,
+        type: Schema.Types.ObjectId, 
+        ref: 'Credential', // Link to the User schema
         required: true,
     },
     status: {
       type: String,
       required: true
     },
+    statusMsg: {
+      type: String, // Optional field for status message
+      required: true,
+    },
+    requestingUser: {
+        type: Schema.Types.ObjectId, 
+        ref: 'Credential', // Link to the User schema
     
+    }
   });
 
   PostModel = mongoose.model('Post', PostSchema);

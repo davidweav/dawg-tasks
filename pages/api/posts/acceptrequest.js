@@ -7,20 +7,12 @@ export default async function handler(req, res) {
         try {
           
             // Extract post data from request body
-            const {reqMsg, post} = req.body;
+            const {postId} = req.body;
 
-            // Retrieve session token from request cookies
-            const token = req.cookies.token;
-
-            // Verify and decode the token
-            const decodedToken = jwt.verify(token, 'key');
-
-            // Extract user data from the token payload
-            const { username, userId } = decodedToken;
-
+        
             const updatePost = await PostModel.findByIdAndUpdate(
-                post,
-                { $set: {status: 'requested', statusMsg: reqMsg, requestingUser: userId }},
+                postId,
+                { $set: {status: 'claimed', statusMsg: ""}},
                 { new: true }
             )
             

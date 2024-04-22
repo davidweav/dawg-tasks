@@ -18,7 +18,7 @@ export default async function handler(req, res) {
       
         // Extract post data from request body
         const { subject, body, dueDate, price } = req.body;
-        console.log(subject, body, dueDate, price);
+
       
         // Retrieve session token from request cookies
         const token = req.cookies.token;
@@ -27,8 +27,8 @@ export default async function handler(req, res) {
         const decodedToken = jwt.verify(token, 'key');
 
         // Extract user data from the token payload
-        const { username } = decodedToken;
-        const newPost = new PostModel({ subject, body, dueDate, price, user: username, status: "Unclaimed" });
+        const { username, userId } = decodedToken;
+        const newPost = new PostModel({ subject, body, dueDate, price, user: userId, status: "Unclaimed", statusMsg: "No Message"});
       
         // Save the new user to the database
         console.log("saving post");

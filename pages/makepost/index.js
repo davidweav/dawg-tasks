@@ -2,9 +2,11 @@ import DropdownMenu from "@/components/DropdownMenu"
 import styles from '/styles/Makepost.module.css'
 import Link from "next/link"
 import { useState } from "react"
+import { useRouter } from "next/router"
 
 export default function Makepost() {
 
+    const router = useRouter();
     const [subject, setSubject] = useState('');
     const [body, setBody] = useState('');
     const [dueDate, setDueDate] = useState('');
