@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import DropdownMenu from "@/components/DropdownMenu";
 import { format } from "date-fns";
+import { set } from "mongoose";
 
 export default function MyTasks() {
 
@@ -12,6 +13,7 @@ export default function MyTasks() {
     const [userData, setUserData] = useState(null); // Contains the user data from the token
     const [myPostData, setMyPostData] = useState([]); // Contains all the users posts
     const [requestData, setRequestData] = useState([]); // Contains all the users incoming requests
+    const [outgoingRequests, setOutgoingRequests] = useState([]); // Contains all the users outgoing requests
     const [claimedTasks, setClaimedTasks] = useState([]); // Contains all the users current tasks
     const [finishedTasks, setFinishedTasks] = useState([]); // New state for finished tasks
 
@@ -28,9 +30,11 @@ export default function MyTasks() {
             const myPosts = data.posts.filter(post => post.user.username === userData.username);
             const claimedPosts = data.posts.filter(post => post.status === "claimed" && post.requestingUser.username === userData.username);
             const requests = myPosts.filter(post => post.status === "requested");
-
+            const outgoingRequests = data.posts.filter(post => post.status === "requested" && post.requestingUser.username === userData.username);
+            console.log(outgoingRequests)
             setMyPostData(myPosts);
             setRequestData(requests);
+            setOutgoingRequests(outgoingRequests);
             setClaimedTasks(claimedPosts);
         } catch (error) {
             console.error("Failed to fetch posts:", error);
@@ -64,6 +68,25 @@ export default function MyTasks() {
     const handleComplete = (post) => {
         setFinishedTasks([...finishedTasks, post]);
         setClaimedTasks(claimedTasks.filter(p => p._id !== post._id));
+        // Send a request to the server to update the post status
+        fetch('/api/posts/handlecomplete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ post })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Post marked as completed:', data.data);
+                } else {
+                    console.error('Failed to mark post as completed:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error marking post as completed:', error);
+            });
     };
 
     const handleDecline = (post) => {
@@ -130,6 +153,20 @@ export default function MyTasks() {
                                 </div>
                             </div>
                         )) : <p>No claimed tasks available.</p>}
+                        <h3 style={{marginTop: '150px'}}>Outgoing Requests</h3>
+                        <p>{outgoingRequests.length}</p>
+                        {outgoingRequests.length > 0 ? outgoingRequests.map((post) => (
+                            <div key={post._id} className="post-box2">
+                                <div>
+                                    <h2 className="post-title2">{post.subject}</h2>
+                                    <div className="post-content2">
+                                        <p>{post.statusMsg}</p>
+                                        <p>{post.requestingUser.username}</p>
+                                        <button className="create-account-btn" onClick={() => handleRequest(post, false)}>Cancel Request</button>
+                                    </div>
+                                </div>
+                            </div>
+                        )) : <p>No outgoing requests.</p>}
                     </div>
                 <div className="task-display">
                     <h3>Claimed Tasks</h3>

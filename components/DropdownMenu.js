@@ -38,7 +38,7 @@ const DropdownMenu = () => {
                 <div className='dropdown'>
                   <button onClick={toggleDropdown}className='dropdown-button'>{userData.username} ^</button>
                   { isOpen && (
-                    <div class="dropdown-content">
+                    <div className="dropdown-content">
                     <Link href='/makepost'>Make Post</Link>
                     <Link href='/taskboard'>Taskboard</Link>
                     <Link href='/user'>My Tasks</Link>
