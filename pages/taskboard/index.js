@@ -2,13 +2,14 @@ import DropdownMenu from "@/components/DropdownMenu";
 import { set } from "mongoose";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 export default function Taskboard() {
     // State to hold the posts data
     const [postData, setPostData] = useState([]);
     const [hoveredPost, setHoveredPost] = useState(null);
     const [reqMsg, setReqMsg] = useState('');
-
+    const router = useRouter();
     // Fetch posts data from the API on component mount
     useEffect(() => {
         async function fetchPosts() {
@@ -35,6 +36,7 @@ export default function Taskboard() {
                 },
                 body: JSON.stringify({"post": hoveredPost, reqMsg})
             })
+            console.log(res);
             if (res.ok) {
             
                 router.reload();

@@ -7,10 +7,19 @@ export default async function handler(req, res) {
         try {
           
             // Extract post data from request body
-            const {postId} = req.body;
+            const {postId, isAccepted} = req.body;
 
         
-            const updatePost = await PostModel.findByIdAndUpdate(
+            if (!isAccepted) {
+              const updatePost = await PostModel.findByIdAndUpdate(
+                postId,
+                { $set: {status: 'Unclaimed', statusMsg: ""}},
+                { new: true }
+              )
+              return res.status(200).json({ success: true, data: updatePost });
+            }
+            else {
+              const updatePost = await PostModel.findByIdAndUpdate(
                 postId,
                 { $set: {status: 'claimed', statusMsg: ""}},
                 { new: true }
@@ -22,6 +31,9 @@ export default async function handler(req, res) {
           
             // Return the updated post
             return res.status(200).json({ success: true, data: updatePost });
+
+            }
+            
         
         } catch (error) {
           

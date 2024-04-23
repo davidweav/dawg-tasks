@@ -29,7 +29,8 @@ export default async function handler(req, res) {
               }
           
             // Return the updated post
-            return res.status(200).json({ success: true, data: updatePost });
+ 
+            res.status(200).json({ success: true, data: updatePost });
         
         } catch (error) {
           

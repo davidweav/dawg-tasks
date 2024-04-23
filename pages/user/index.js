@@ -4,17 +4,26 @@ import { useRouter } from "next/router";
 import DropdownMenu from "@/components/DropdownMenu";
 
 export default function MyTasks() {
+
     const router = useRouter();
-    const [userData, setUserData] = useState(null);
-    const [myPostData, setMyPostData] = useState([]);
-    const [requestData, setRequestData] = useState([]);
-    const [claimedTasks, setClaimedTasks] = useState([]);
+    
+    // States of the Page
+    const [userData, setUserData] = useState(null); // Contains the user data from the token
+    const [myPostData, setMyPostData] = useState([]); // Contains all the users posts
+    const [requestData, setRequestData] = useState([]); // Contains all the users incoming requests
+    const [claimedTasks, setClaimedTasks] = useState([]); // Contains all the users current tasks
     const [finishedTasks, setFinishedTasks] = useState([]); // New state for finished tasks
 
+    
+    /**
+     * Function responsible for fetching the array of posts from the database
+     */
     async function fetchPosts() {
         try {
+
             const res = await fetch('/api/posts/readposts');
             const data = await res.json();
+            
             const myPosts = data.posts.filter(post => post.user.username === userData.username);
             const claimedPosts = data.posts.filter(post => post.status === "claimed" && post.requestingUser.username === userData.username);
             const requests = myPosts.filter(post => post.status === "requested");
@@ -27,17 +36,21 @@ export default function MyTasks() {
         }
     }
 
-    const handleAccept = async (postId) => {
+    /**
+     * Handles the action users take on incoming requests
+     * @param {} postId 
+     */
+    const handleRequest = async (postId, isAccepted) => {
         try {
             const res = await fetch('/api/posts/acceptrequest', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ postId })
+                body: JSON.stringify({ postId, isAccepted })
             });
             if (res.ok) {
-                fetchPosts(); // Re-fetch posts to update the UI
+                router.reload()
             } else {
                 const errorData = await res.json();
                 console.error('Accept request failed:', errorData);
@@ -93,6 +106,22 @@ export default function MyTasks() {
             </nav>
 
             <div className="user-task-container">
+                <div className="task-display">
+                        <h3>Incoming Requests</h3>
+                        {requestData.length > 0 ? requestData.map((post) => (
+                            <div key={post._id} className="post-box2">
+                                <div>
+                                    <h2 className="post-title2">{post.subject}</h2>
+                                    <div className="post-content2">
+                                        <p>{post.statusMsg}</p>
+                                        <p>{post.requestingUser.username}</p>
+                                        <button className="create-account-btn" onClick={() => handleRequest(post, true)}>Accept</button>
+                                        <button className="create-account-btn" onClick={() => handleRequest(post, false)}>Decline</button>
+                                    </div>
+                                </div>
+                            </div>
+                        )) : <p>No claimed tasks available.</p>}
+                    </div>
                 <div className="task-display">
                     <h3>Claimed Tasks</h3>
                     {claimedTasks.length > 0 ? claimedTasks.map((post) => (
