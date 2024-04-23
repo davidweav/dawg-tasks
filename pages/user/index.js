@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import DropdownMenu from "@/components/DropdownMenu";
+import { format } from "date-fns";
 
 export default function MyTasks() {
 
@@ -74,6 +75,13 @@ export default function MyTasks() {
         }
     };
 
+    function formatDate(dateString) {
+        // Parse the MongoDB date string into a Date object
+        const date = new Date(dateString);
+        
+        // Format the date using date-fns
+        return format(date, 'MM/dd/yyyy');
+    }
     useEffect(() => {
         async function fetchUserData() {
             try {
@@ -133,10 +141,9 @@ export default function MyTasks() {
                                 <div className="post-content2">
                                     <p>{post.body}</p>
                                     <p>{post.user.username}</p>
-                                    <p>{post.dueDate}</p>
+                                    <p>{formatDate(post.dueDate)}</p>
                                     <p>${post.price}</p>
-                                    <button onClick={() => handleComplete(post)}>Complete</button>
-                                    <button onClick={() => handleDecline(post)}>Decline</button>
+                                    <button onClick={() => handleComplete(post)}>Finished</button>
                                 </div>
                             </div>
                         </div>
@@ -148,32 +155,20 @@ export default function MyTasks() {
                     {myPostData.length > 0 ? myPostData.map((post) => (
                         <div key={post._id} className="post-box2">
                             <div>
-                                <h2 className="post-title2">{post.subject}</h2>
-                                <div className="post-content2">
-                                    <p>{post.body}</p>
-                                    <p>{post.user.username}</p>
-                                    <p>{post.dueDate}</p>
-                                    <p>${post.price}</p>
-                                </div>
-                            </div>
+                        
+                            <h2 className="post-title2">{post.subject}</h2>
+                            <p>{formatDate(post.dueDate)}</p>
+                            {post.status == "claimed" ? 
+                            (<>
+                            <p>Claimed by: {post.requestingUser.username}</p>
+                            </>) : (<>
+                            <p>Unclaimed</p></>)}
                         </div>
+                        </div>
+                   
                     )) : <p>You have not posted any tasks.</p>}
                 </div>
-                <div className="task-display">
-                    <h3>Finished Tasks  </h3>
-                    <p>{finishedTasks.length}</p>
-                    {finishedTasks.length > 0 ? finishedTasks.map((post) => (
-                        <div key={post._id} className="post-box2">
-                            <div>
-                                <h2 className="post-title2">{post.subject}</h2>
-                                <div className="post-content2">
-                                    <p>Task was {post.reason ? "declined" : "completed"}</p>
-                                    {post.reason && <p>Reason: {post.reason}</p>}
-                                </div>
-                            </div>
-                        </div>
-                    )) : <p>No finished tasks yet.</p>}
-                </div>
+    
             </div>
         </main>
     );
