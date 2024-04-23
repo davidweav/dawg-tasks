@@ -189,7 +189,7 @@ form button {
 }
 .post-box2 {
   width: 200px;
-  padding: 20px;
+  padding: 8px 0 20px 0;
   border-radius: 5px;
   margin: 1em 0;
   background-color: #EF233C;
@@ -216,6 +216,7 @@ form button {
   font-size: 25px;
   color: white;
 }
+
 
 .post-content > p {
   margin: 1em 0;
@@ -260,6 +261,16 @@ form button {
   width: 80%;
 }
 
+.icon {
+  margin-left: 80% !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  transition: all 0.3s
+}
+
+.icon:hover {
+  color: black;
+}
 .user-task-container {
   display: flex;
   justify-content: space-between;

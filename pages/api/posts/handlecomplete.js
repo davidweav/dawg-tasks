@@ -27,10 +27,7 @@ export default async function handler(req, res) {
       }
       res.status(200).json({ success: true, message: 'Post deleted successfully' });
 
-      if (!updatePost) {
-        return res.status(404).json({ success: false, message: 'Post not found' });
-      }
-      res.status(200).json({ success: true, data: updatePost });
+    
     } catch (error) {
       console.error(error);
       res.status(400).json({ message: error.message });

@@ -4,6 +4,9 @@ import { useRouter } from "next/router";
 import DropdownMenu from "@/components/DropdownMenu";
 import { format } from "date-fns";
 import { set } from "mongoose";
+import { ReactElement } from 'react'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function MyTasks() {
 
@@ -80,6 +83,7 @@ export default function MyTasks() {
             .then(data => {
                 if (data.success) {
                     console.log('Post marked as completed:', data.data);
+                    router.reload();
                 } else {
                     console.error('Failed to mark post as completed:', data.message);
                 }
@@ -192,7 +196,7 @@ export default function MyTasks() {
                     {myPostData.length > 0 ? myPostData.map((post) => (
                         <div key={post._id} className="post-box2">
                             <div>
-                        
+                            <FontAwesomeIcon onClick={() => handleComplete(post)}className="icon" icon={faTrash} />
                             <h2 className="post-title2">{post.subject}</h2>
                             <p>{formatDate(post.dueDate)}</p>
                             {post.status == "claimed" ? 
