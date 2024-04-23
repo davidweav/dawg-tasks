@@ -159,6 +159,7 @@ form button {
 }
 
 .taskboard-box {
+  margin-top: 2em;
   display: flex;
   flex-wrap: wrap;
   justify-content: center; 
@@ -182,6 +183,10 @@ form button {
   color: black;
 }
 
+.post-content em {
+  color: white;
+
+}
 .post-box2 {
   width: 200px;
   padding: 20px;
@@ -192,6 +197,20 @@ form button {
   transition: all 0.3s ease;
 }
 
+.post-sub-content {
+  color: black;
+  display: flex;
+  justify-content: space-between;
+}
+
+.post-price {
+  color: white !important;
+  background-color: black;
+  margin-left: 30px;
+  padding: 10px;
+  border-radius: 30px;
+  margin-bottom: 0;
+}
 
 .post-title {
   font-size: 25px;
@@ -211,15 +230,21 @@ form button {
   padding: 20px;
   border-radius: 5px;
   background-color: #EF233C;
-  border: solid grey 3px;
+  border: solid white 3px;
+  
   transition: all 0.3s ease;
+}
+
+.post-box:hover {
+  background-color: #ef233bce;
+  box-shadow: 3px 3px ;
 }
 
 .post-input {
   height: 80%;
   padding: 5px;
   text-align: centers;
-  
+  margin-left: 20px;
 
 }
 .post-button {

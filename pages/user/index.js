@@ -108,6 +108,7 @@ export default function MyTasks() {
             <div className="user-task-container">
                 <div className="task-display">
                         <h3>Incoming Requests</h3>
+                        <p>{requestData.length}</p>
                         {requestData.length > 0 ? requestData.map((post) => (
                             <div key={post._id} className="post-box2">
                                 <div>
@@ -124,6 +125,7 @@ export default function MyTasks() {
                     </div>
                 <div className="task-display">
                     <h3>Claimed Tasks</h3>
+                    <p>{claimedTasks.length}</p>
                     {claimedTasks.length > 0 ? claimedTasks.map((post) => (
                         <div key={post._id} className="post-box2">
                             <div>
@@ -142,6 +144,7 @@ export default function MyTasks() {
                 </div>
                 <div className="task-display">
                     <h3>My Tasks</h3>
+                    <p>{myPostData.length}</p>
                     {myPostData.length > 0 ? myPostData.map((post) => (
                         <div key={post._id} className="post-box2">
                             <div>
@@ -157,7 +160,8 @@ export default function MyTasks() {
                     )) : <p>You have not posted any tasks.</p>}
                 </div>
                 <div className="task-display">
-                    <h3>Finished Tasks</h3>
+                    <h3>Finished Tasks  </h3>
+                    <p>{finishedTasks.length}</p>
                     {finishedTasks.length > 0 ? finishedTasks.map((post) => (
                         <div key={post._id} className="post-box2">
                             <div>

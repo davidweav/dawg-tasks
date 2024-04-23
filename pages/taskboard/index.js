@@ -3,6 +3,7 @@ import { set } from "mongoose";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { format } from "date-fns";
 
 export default function Taskboard() {
     // State to hold the posts data
@@ -10,6 +11,7 @@ export default function Taskboard() {
     const [hoveredPost, setHoveredPost] = useState(null);
     const [reqMsg, setReqMsg] = useState('');
     const router = useRouter();
+
     // Fetch posts data from the API on component mount
     useEffect(() => {
         async function fetchPosts() {
@@ -22,9 +24,16 @@ export default function Taskboard() {
                 console.error("Failed to fetch posts:", error);
             }
         }
-        
         fetchPosts();
     }, []); // The empty array means this effect runs once on mount
+
+    function formatDate(dateString) {
+        // Parse the MongoDB date string into a Date object
+        const date = new Date(dateString);
+        
+        // Format the date using date-fns
+        return format(date, 'MM/dd/yyyy');
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -52,8 +61,6 @@ export default function Taskboard() {
         }
         }
     
-
-
     return (
         <main className="page" >
             <nav >
@@ -75,18 +82,30 @@ export default function Taskboard() {
                       onClick={() => {setHoveredPost(post._id)}} 
                       className={hoveredPost == post._id ? 'post-box clicked' : "post-box"}>
                         <div>
+                            <div className="post-sub-content">
                           <h2 className="post-title">{post.subject}</h2>
+                          <h3 className="post-price">${post.price}</h3>
+                          </div>
                           <div className="post-content">
                             <p>{post.body}</p>
+                            
+                            <div className="post-sub-content">
+                            <p><em>Posted By:</em> </p>
                             <p>{post.user.username}</p>
-                            <p>{post.dueDate}</p>
-                            <p>${post.price}</p>
+                            </div>
+                            
+                            <div className="post-sub-content">
+                            <p><em>Complete By:</em> </p>
+                            <p>{formatDate(post.dueDate)}</p>
+                            </div>
+                            
+                            
                         </div>
                         </div>
                             {hoveredPost == post._id && (
                                  <div className="additional-fields">
                                     <form onSubmit={handleSubmit}>
-                                        <textarea className="post-input" value = {reqMsg} type="text" placeholder="Send a message in your request" 
+                                        <textarea className="post-input" required rows="10" value = {reqMsg} type="text" placeholder="Send a message in your request. Include contact details, so the user who posted can contact you" 
                                         onChange={(e) => setReqMsg(e.target.value)}/>
                                         <button className="post-button" type="submit">Claim Task</button>
                                     </form>
