@@ -181,10 +181,21 @@ export default function MyTasks() {
                                 <h2 className="post-title2">{post.subject}</h2>
                                 <div className="post-content2">
                                     <p>{post.body}</p>
+                                    <div className="post-sub-content">
+                                        <p><em>Posting User:</em></p>
                                     <p>{post.user.username}</p>
-                                    <p>{formatDate(post.dueDate)}</p>
-                                    <p>${post.price}</p>
-                                    <button onClick={() => handleComplete(post)}>Finished</button>
+                                    </div>
+                                    <div className="post-sub-content">
+                                        <p><em>Complete By:</em></p>
+                                        <p>{formatDate(post.dueDate)}</p>
+                                    </div>
+                                    <div className="post-sub-content">
+                                        <p><em>Payout:</em></p>
+                                        <p>${post.price}</p>
+                                    </div>
+                                    
+                                    
+                                    <button className="create-account-btn" onClick={() => handleComplete(post)}>Finished</button>
                                 </div>
                             </div>
                         </div>

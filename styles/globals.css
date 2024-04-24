@@ -183,10 +183,11 @@ form button {
   color: black;
 }
 
-.post-content em {
+.post-sub-content em {
   color: white;
 
 }
+ 
 .post-box2 {
   width: 200px;
   padding: 8px 0 20px 0;
@@ -203,6 +204,10 @@ form button {
   justify-content: space-between;
 }
 
+.post-box2 .post-sub-content {
+  padding: 0 5px;
+  font-size: 12px;
+}
 .post-price {
   color: white !important;
   background-color: black;

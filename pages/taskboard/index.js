@@ -87,6 +87,7 @@ export default function Taskboard() {
                           <h3 className="post-price">${post.price}</h3>
                           </div>
                           <div className="post-content">
+                            
                             <p>{post.body}</p>
                             
                             <div className="post-sub-content">
@@ -99,7 +100,6 @@ export default function Taskboard() {
                             <p>{formatDate(post.dueDate)}</p>
                             </div>
                             
-                            
                         </div>
                         </div>
                             {hoveredPost == post._id && (
@@ -107,7 +107,7 @@ export default function Taskboard() {
                                     <form onSubmit={handleSubmit}>
                                         <textarea className="post-input" required rows="10" value = {reqMsg} type="text" placeholder="Send a message in your request. Include contact details, so the user who posted can contact you" 
                                         onChange={(e) => setReqMsg(e.target.value)}/>
-                                        <button className="post-button" type="submit">Claim Task</button>
+                                        <button className="create-account-btn" type="submit">Claim Task</button>
                                     </form>
                                  
                                </div>
