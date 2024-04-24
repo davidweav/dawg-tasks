@@ -2,6 +2,7 @@ This is a web app created by Adam, David, Tianze, Zhao, and Garison
 
 It uses the framework Next.js and MongoDB
 
+Presentation Link https://docs.google.com/presentation/d/13aLIpYzeMUNEBhBXrRWYwbLJsMnPfvdnQMQ1ypRJN0I/edit?usp=sharing
 ## Getting Started
 
 First, make sure you have the latest version of Node installed
